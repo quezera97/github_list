@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Put, Param, ParseIntPipe, Delete } from '@
 import { CreateUserDto } from './dto/createuser.dto';
 import { UpdateUserDto } from './dto/updateuser.dto';
 import { UsersService } from './users.service';
-import { UserEntitiy } from 'src/typeorm/entities/user.entity';
+import { UserEntity } from 'src/typeorm/entities/user.entity';
 @Controller('users')
 export class UsersController {
 
@@ -14,12 +14,12 @@ export class UsersController {
     }
 
     @Get(':id') 
-    async getUserById(@Param('id', ParseIntPipe) id: number): Promise<UserEntitiy | null> {
+    async getUserById(@Param('id', ParseIntPipe) id: number): Promise<UserEntity | null> {
         return this.userService.getUserById(id);
     }
 
     @Post()
-    async createUser(@Body() createUserDto: CreateUserDto): Promise<UserEntitiy | null> {
+    async createUser(@Body() createUserDto: CreateUserDto): Promise<UserEntity | null> {
         return this.userService.createUser(createUserDto);
     }
 

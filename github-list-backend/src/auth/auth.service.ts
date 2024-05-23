@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntitiy } from 'src/typeorm/entities/user.entity';
+import { UserEntity } from 'src/typeorm/entities/user.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(UserEntitiy) private usersRepository: Repository<UserEntitiy>,
+    @InjectRepository(UserEntity) private usersRepository: Repository<UserEntity>,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<UserEntitiy | null> {
+  async validateUser(email: string, password: string): Promise<UserEntity | null> {
     const user = await this.usersRepository.findOne({ where: { email, password } });
-    
+
     return user || null;
   }
 }
