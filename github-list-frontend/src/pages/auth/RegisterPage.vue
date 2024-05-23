@@ -51,6 +51,7 @@
 
 <script setup lang="ts">
   import { ref } from 'vue';
+  import { api } from 'boot/axios';
 
   defineOptions({
     name: 'RegisterPage'
@@ -61,15 +62,23 @@
   const password = ref<string | null>(null);
   const confirmPassword = ref<string | null>(null);
 
-  const handleRegister = () => {
-    console.log('Username:', username.value);
-    console.log('Email:', email.value);
-    console.log('Password:', password.value);
-    console.log('Confirm Password:', confirmPassword.value);
+  const handleRegister = async () => {
+    try {
+      const response = await api.post('/users', {
+        username: username.value,
+        email: email.value,
+        password: password.value,
+      });
 
-    username.value = '';
-    email.value = '';
-    password.value = '';
-    confirmPassword.value = '';
+      console.log('User created:', response.data);
+
+      // Clear the input fields
+      username.value = '';
+      email.value = '';
+      password.value = '';
+      confirmPassword.value = '';
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
   };
 </script>

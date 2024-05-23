@@ -34,6 +34,7 @@
 
 <script setup lang="ts">
   import { ref } from 'vue';
+  import { api } from 'boot/axios';
 
   defineOptions({
     name: 'LoginPage'
@@ -42,11 +43,19 @@
   const email = ref<string | null>(null);
   const password = ref<string | null>(null);
 
-  const handleLogin = () => {
-    console.log('Email:', email.value);
-    console.log('Password:', password.value);
+  const handleLogin = async () => {
+    try {
+      const response = await api.get('/users', {
+        email: email.value,
+        password: password.value,
+      });
 
-    email.value = '';
-    password.value = '';
+      console.log('User created:', response.data);
+
+      email.value = '';
+      password.value = '';
+    } catch (error) {
+      console.error('Error getting user:', error);
+    }
   };
 </script>

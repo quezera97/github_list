@@ -1,5 +1,5 @@
-/* user.entity.ts */
-/* eslint-disable prettier/prettier */
+// entity is a class that represents a table in database.
+
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'users' })
@@ -11,13 +11,12 @@ export class UserEntitiy {
     @Column({ unique: true })
     username: string;
 
+    @Column({ unique: true })
+    email: string;
+
     @Column()
     password: string;
 
     @Column()
-    createdAt: Date;
-
-    @Column({ nullable: true })
-    authStrategy: string;
-
+    created_at: Date;
 }
