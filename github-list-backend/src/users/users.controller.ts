@@ -2,18 +2,24 @@ import { Controller, Get, Post, Body, Put, Param, ParseIntPipe, Delete } from '@
 import { CreateUserDto } from './dto/createuser.dto';
 import { UpdateUserDto } from './dto/updateuser.dto';
 import { UsersService } from './users.service';
+import { UserEntitiy } from 'src/typeorm/entities/user.entity';
 @Controller('users')
 export class UsersController {
 
     constructor(private userService: UsersService) { }
 
     @Get()
-    getUsers() {
-        return this.userService.getUser();
+    async getUsers() {
+        return this.userService.getUsers();
+    }
+
+    @Get(':id') 
+    async getUserById(@Param('id', ParseIntPipe) id: number): Promise<UserEntitiy | null> {
+        return this.userService.getUserById(id);
     }
 
     @Post()
-    createUser(@Body() createUserDto: CreateUserDto) {
+    async createUser(@Body() createUserDto: CreateUserDto): Promise<UserEntitiy | null> {
         return this.userService.createUser(createUserDto);
     }
 

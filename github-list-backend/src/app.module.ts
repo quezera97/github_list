@@ -5,8 +5,11 @@ import { AppService } from './app.service';
 
 import { UserEntitiy } from './typeorm/entities/user.entity';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 
+const appEntities = [UserEntitiy];
+const appModules = [UsersModule, AuthModule];
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -16,10 +19,10 @@ import { UsersModule } from './users/users.module';
       username: 'root',
       password: '',
       database: 'github_list',
-      entities: [UserEntitiy],
+      entities: appEntities,
       // Setting synchronize: true shouldn't be used in production - otherwise you can lose production data.
       synchronize: true,
-    }), UsersModule,
+    }), ...appModules,
   ],
   controllers: [AppController],
   providers: [AppService],

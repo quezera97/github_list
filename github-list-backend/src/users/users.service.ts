@@ -10,8 +10,12 @@ export class UsersService {
         @InjectRepository(UserEntitiy) private userRepository: Repository<UserEntitiy>,
     ) { }
 
-    getUser() {
+    getUsers() {
         return this.userRepository.find();
+    }
+
+    getUserById(id: number): Promise<UserEntitiy | null> {
+        return this.userRepository.findOne({ where: { id } });
     }
 
     createUser(userDetails: CreateUserParams) {

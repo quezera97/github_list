@@ -45,17 +45,19 @@
 
   const handleLogin = async () => {
     try {
-      const response = await api.get('/users', {
+      const response = await api.post('/login/user', {
         email: email.value,
         password: password.value,
       });
 
-      console.log('User created:', response.data);
+      console.log('User logged in:', response.data);
 
       email.value = '';
       password.value = '';
     } catch (error) {
-      console.error('Error getting user:', error);
+      console.error('Error getting user:', error.message);
     }
   };
 </script>
+<!-- kubohe@mailinator.com -->
+<!-- Pa$$w0rd! -->
