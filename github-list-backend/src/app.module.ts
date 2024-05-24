@@ -3,13 +3,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { UserEntity } from './typeorm/entities/user.entity';
+import { UserEntity } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { GithubRepoEntity } from './github-repos/entities/github-repo.entity';
+import { GithubReposModule } from './github-repos/github-repos.module';
 
 
-const appEntities = [UserEntity];
-const appModules = [UsersModule, AuthModule];
+const appEntities = [UserEntity, GithubRepoEntity];
+const appModules = [UsersModule, AuthModule, GithubReposModule];
 @Module({
   imports: [
     TypeOrmModule.forRoot({

@@ -11,7 +11,7 @@
 <script setup lang="ts">
   import { defineEmits } from 'vue';
 
-  const emit = defineEmits();
+  const emit = defineEmits(['banner-click']);
 
   defineOptions({
     name: 'Banner'
@@ -21,15 +21,12 @@
     bannerClass: string;
     bannerMessage: string;
     buttonLabel: string;
-    actionHandlerProps: Function;
-    // actionHandlerProps: () => void;
   }
 
   const props = defineProps<BannerProps>();
 
   const actionHandler = () => {
-    props.actionHandlerProps();
-    emit('button-click');
+    emit('banner-click');
   };
 </script>
 

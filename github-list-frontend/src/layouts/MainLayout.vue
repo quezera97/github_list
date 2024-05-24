@@ -49,7 +49,7 @@
         :bannerClass="addClass"
         :bannerMessage="addMessage"
         :buttonLabel="addLabel"
-        :actionHandlerProps="handleBannerButtonClick"
+        @banner-click="handleBannerButtonClick"
       />
 
       <FloatingButton :fabs="fabConfig" fab-color="blue" fab-direction="up" />

@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'github_repo' })
-export class UserEntity {
+export class GithubRepoEntity {
 
     @PrimaryGeneratedColumn({ type: 'bigint' })
     id: number;
@@ -9,10 +9,10 @@ export class UserEntity {
     @Column({ unique: true })
     repository: string;
 
-    @Column()
+    @Column({ nullable: true })
     description: string;
 
-    @Column()
+    @Column({ nullable: true })
     meta: string;
 
     @Column()

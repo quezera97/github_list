@@ -19,6 +19,7 @@ const routes: RouteRecordRaw[] = [
       { path: 'add', component: loadPage('github/GithubAddPage') },
       { path: 'list', component: loadPage('github/GithubListPage') },
       { path: 'detail/:id', component: loadPage('github/GithubDetailPage') },
+      { path: 'edit/:id', component: loadPage('github/GithubEditPage') },
     ],
   },
   {

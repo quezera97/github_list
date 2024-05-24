@@ -7,7 +7,7 @@
         <div class="text-h6">Github Details</div>
       </q-card-section>
 
-      <q-card-section>
+      <q-card-section v-if="repository">
         <q-item>
           <q-item-section avatar>
             <q-avatar>
@@ -16,9 +16,9 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Title</q-item-label>
+            <q-item-label>{{ repository.repository }}</q-item-label>
             <q-item-label caption>
-              Subhead
+              {{ repository.meta ?? 'No Meta Available' }}
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -26,14 +26,8 @@
         <q-separator />
 
         <q-card-section horizontal>
-          <q-card-section>
-            lorem
-          </q-card-section>
-
-          <q-separator vertical />
-
           <q-card-section class="col-4">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            {{ repository.description ?? 'No Description Available' }}
           </q-card-section>
         </q-card-section>
 
@@ -41,12 +35,9 @@
 
         <q-card-actions>
           <q-btn flat round icon="event" />
-          <q-btn flat>
-            7:30PM
-          </q-btn>
-          <q-btn flat color="primary">
-            Reserve
-          </q-btn>
+          <q-item-label>
+            {{ formattedDate(repository.created_at) }}
+          </q-item-label>
         </q-card-actions>
       </q-card-section>
     </q-card>
@@ -56,7 +47,10 @@
 
 
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { ref, onMounted } from 'vue';
+  import { useRoute } from 'vue-router';
+  import { api } from 'boot/axios';
+  import { format } from 'date-fns';
 
   import Breadcrumb from '../../components/BreadcrumbComponent.vue';
 
@@ -66,7 +60,25 @@
 
   const breadcrumbs = [
     { label: 'Home', to: '/' },
-    { label: 'Github List', to: '/github/list'},
-    { label: 'Github Details'},
+    { label: 'Github Repository List', to: '/github/list'},
+    { label: 'Github Repository Details'},
   ];
+
+  const route = useRoute();
+  const repository = ref(null);
+
+  const formattedDate = (dateString: string) => {
+    return format(new Date(dateString), "dd MMMM yyyy - hh:mm a");
+  };
+
+  onMounted(async () => {
+    const id = route.params.id;
+
+    try {
+      const response = await api.get(`/github-repos/${id}`);
+      repository.value = response.data;
+    } catch (error) {
+      console.error('Failed to fetch repository details:', error);
+    }
+  });
 </script>

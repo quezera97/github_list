@@ -21,7 +21,7 @@
         :bannerClass="addClass"
         :bannerMessage="addMessage"
         :buttonLabel="addLabel"
-        :actionHandlerProps="handleBannerButtonClick"
+        @banner-click="handleBannerButtonClick"
       />
 
       <router-view />
