@@ -7,7 +7,7 @@
         <div class="text-h6">Github Details</div>
       </q-card-section>
 
-      <q-card-section v-if="repository">
+      <q-card-section>
         <q-item>
           <q-item-section avatar>
             <q-avatar>
@@ -16,9 +16,9 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>{{ repository.repository }}</q-item-label>
+            <q-item-label>{{ repository }}</q-item-label>
             <q-item-label caption>
-              {{ repository.meta ?? 'No Meta Available' }}
+              {{ meta ?? 'No Meta Available' }}
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -27,7 +27,7 @@
 
         <q-card-section horizontal>
           <q-card-section class="col-4">
-            {{ repository.description ?? 'No Description Available' }}
+            {{ description ?? 'No Description Available' }}
           </q-card-section>
         </q-card-section>
 
@@ -36,7 +36,7 @@
         <q-card-actions>
           <q-btn flat round icon="event" />
           <q-item-label>
-            {{ formattedDate(repository.created_at) }}
+            {{ created_at ? formattedDate(created_at) : 'No Date Available' }}
           </q-item-label>
         </q-card-actions>
       </q-card-section>
@@ -65,7 +65,11 @@
   ];
 
   const route = useRoute();
-  const repository = ref(null);
+
+  const repository = ref<string | null>(null);
+  const description = ref<string | null>(null);
+  const meta = ref<string | null>(null);
+  const created_at = ref<string | null>(null);
 
   const formattedDate = (dateString: string) => {
     return format(new Date(dateString), "dd MMMM yyyy - hh:mm a");
@@ -76,7 +80,19 @@
 
     try {
       const response = await api.get(`/github-repos/${id}`);
-      repository.value = response.data;
+
+      const {
+        repository: repo,
+        description: desc,
+        meta: metaData,
+        created_at: createdAt
+      } = response.data;
+
+      repository.value = repo;
+      description.value = desc;
+      meta.value = metaData;
+      created_at.value = createdAt;
+
     } catch (error) {
       console.error('Failed to fetch repository details:', error);
     }

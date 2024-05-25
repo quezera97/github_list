@@ -23,7 +23,7 @@
     buttonLabel: string;
   }
 
-  const props = defineProps<BannerProps>();
+  defineProps<BannerProps>();
 
   const actionHandler = () => {
     emit('banner-click');

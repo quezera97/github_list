@@ -48,12 +48,17 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import { api } from 'boot/axios';
+  import { useQuasar } from 'quasar'
+  import { useRouter } from 'vue-router';
 
   import Breadcrumb from '../../components/BreadcrumbComponent.vue';
 
   defineOptions({
     name: 'ToDoAddPage'
   });
+
+  const $q = useQuasar();
+  const router = useRouter();
 
   const breadcrumbs = [
     { label: 'Home', to: '/' },
@@ -74,11 +79,19 @@
 
       console.log('Repo added:', response.data);
 
+      await router.push('/github/list');
+
+      $q.notify({
+        type: 'positive',
+        message: 'Github Repository successfully added',
+      })
+
     } catch (error) {
-      console.error('Error getting repo:', error.message);
+      console.error('Error getting repo:', error);
     }
 
     handleReset();
+
   };
 
   const handleReset = () => {

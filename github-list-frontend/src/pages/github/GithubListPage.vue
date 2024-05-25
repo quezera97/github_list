@@ -7,7 +7,7 @@
         <div class="text-h6">Github List</div>
       </q-card-section>
       <q-list bordered class="rounded-borders q-pa-md" style="min-width: 100%;">
-        <q-item class="q-mb-lg" v-for="(item, index) in items" :key="item.id">
+        <q-item class="q-mb-lg" v-if="items.length > 0" v-for="(item, index) in items" :key="item.id">
           <List
             :key="item.id"
             :repository="item.repository"
@@ -17,6 +17,11 @@
             :routeToEdit="`/github/edit/${item.id}`"
             @delete="handleDelete(item.id)"
           />
+        </q-item>
+        <q-item v-else>
+          <q-item-section>
+            <q-item-label>No repositories available</q-item-label>
+          </q-item-section>
         </q-item>
       </q-list>
     </q-card>
@@ -39,8 +44,15 @@
     { label: 'Github Repository List'},
   ];
 
-  //initialize items
-  const items = ref([]);
+  interface RepositoryProps {
+    id: number;
+    repository: string;
+    description: string;
+    meta: string;
+  }
+
+  //initialize items array
+  const items = ref<RepositoryProps[]>([]);
 
   onMounted(async () => {
     try {

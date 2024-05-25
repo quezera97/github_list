@@ -11,7 +11,7 @@
         <q-form @submit.prevent="handleSubmit" @reset="handleReset" class="q-gutter-md">
           <q-input
             filled
-            v-model="editedRepository"
+            v-model="repository"
             label="Repository"
             hint="Github Repository"
             lazy-rules
@@ -20,7 +20,7 @@
           />
           <q-input
             filled
-            v-model="editedDescription"
+            v-model="description"
             label="Description"
             hint="Repository Description"
             lazy-rules
@@ -28,7 +28,7 @@
           />
           <q-input
             filled
-            v-model="editedMeta"
+            v-model="meta"
             label="Meta"
             hint="Repository Meta"
             lazy-rules
@@ -64,9 +64,9 @@
 
   const route = useRoute();
 
-  const editedRepository = ref('');
-  const editedDescription = ref('');
-  const editedMeta = ref('');
+  const repository = ref<string | null>(null);
+  const description = ref<string | null>(null);
+  const meta = ref<string | null>(null);
 
   const id = route.params.id;
 
@@ -74,10 +74,16 @@
     try {
       const response = await api.get(`/github-repos/${id}`);
 
-      const { repository, description, meta } = response.data;
-      editedRepository.value = repository;
-      editedDescription.value = description;
-      editedMeta.value = meta;
+      const {
+        repository: repo,
+        description: desc,
+        meta: metaData
+      } = response.data;
+
+      repository.value = repo;
+      description.value = desc;
+      meta.value = metaData;
+
     } catch (error) {
       console.error('Failed to fetch repository details:', error);
     }
@@ -86,21 +92,21 @@
   const handleSubmit = async () => {
     try {
       const response = await api.put(`/github-repos/${id}`, {
-        repository: editedRepository.value,
-        description: editedDescription.value,
-        meta: editedMeta.value
+        repository: repository.value,
+        description: description.value,
+        meta: meta.value
       });
 
       console.log('Repo edited:', response.data);
 
     } catch (error) {
-      console.error('Error getting repo:', error.message);
+      console.error('Error getting repo:', error);
     }
   };
 
   const handleReset = () => {
-    editedRepository.value = null;
-    editedDescription.value = null;
-    editedMeta.value = null;
+    repository.value = null;
+    description.value = null;
+    meta.value = null;
   };
 </script>

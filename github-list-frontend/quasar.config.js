@@ -83,7 +83,30 @@ module.exports = configure(function (/* ctx */) {
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
-      config: {},
+      config: {
+        notify: {
+          // type: 'postive' | 'negative' | 'warning'
+          // actionsTextColor: 'white', // Text color of actions (e.g., buttons) within the notification
+          // color: 'primary', // Color of the notification. Options: any color from Quasar's color palette
+          // bgColor: 'primary', // Background color of the notification. Options: any color from Quasar's color palette
+          // progress: true, // Whether to show a progress bar indicating the remaining time before the notification dismisses
+          // badge: false, // Whether to show a badge on the app icon indicating the presence of unread notifications
+          // badgeColor: 'accent', // Color of the badge. Options: any color from Quasar's color palette
+          // badgeTextColor: 'white', // Text color of the badge
+          // group: true, // Whether to group multiple notifications of the same type together
+          // positionY: 'top', // Vertical alignment of the notification. Options: 'top', 'middle', 'bottom'
+          // classes: '', // Additional CSS classes to apply to the notification
+          // actions: [], // Array of action objects to include in the notification (e.g., buttons)
+          // icon: '', // URL or path to an icon to display in the notification
+          // closeBtn: true, // Whether to show a close button on the notification
+          // closeBtnColor: 'white', // Color of the close button
+          // onDismiss: () => {} // Callback function to execute when the notification is dismissed
+
+          position: 'bottom-right',
+          timeout: 2000,
+          textColor: 'white',
+        }
+      },
 
       iconSet: 'material-icons', // Quasar icon set
       lang: 'en-US', // Quasar language pack
@@ -96,7 +119,10 @@ module.exports = configure(function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Notify',
+        'Dialog'
+      ]
     },
 
     // animations: 'all', // --- includes all animations
