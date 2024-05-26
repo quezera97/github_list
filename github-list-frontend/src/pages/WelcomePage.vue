@@ -53,7 +53,7 @@
                   </q-item-section>
                   <q-item-section side>
                     <q-btn class="glossy" round color="deep-orange" icon="add" size="sm"
-                      @click="addGithub(item.repository, item.description, item.meta)"
+                      @click="() => addGithub(item.repository, item.description, item.meta)"
                     />
                   </q-item-section>
                 </q-item>

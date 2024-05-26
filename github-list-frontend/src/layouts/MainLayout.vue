@@ -48,8 +48,9 @@
       <Banner
         :bannerClass="addClass"
         :bannerMessage="addMessage"
+        :showButton="addShowButton"
         :buttonLabel="addLabel"
-        @banner-click="handleBannerButtonClick"
+        @banner-click="updateStatus"
       />
 
       <FloatingButton :fabs="fabConfig" fab-color="blue" fab-direction="up" />
@@ -61,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { ref, onMounted } from 'vue';
   import { useRouter } from 'vue-router';
   import EssentialLink from '../components/EssentialLink.vue';
   import Banner from '../components/BannerComponent.vue';
@@ -92,12 +93,33 @@
   //for banner
   const addClass = ref('text-white bg-red');
   const addMessage = ref('You have lost connection to the internet. This app is offline.');
-  const addLabel = ref('Turn ON Wifi');
+  const addShowButton = ref(true);
+  const addLabel = ref('Retry');
 
-  const handleBannerButtonClick = () => {
-    addClass.value = 'text-white bg-amber';
+  onMounted(() => {
+    updateStatus();
+  });
+
+  const updateStatus = () => {
+    if (navigator.onLine) {
+      showOnline();
+    } else {
+      showOffline();
+    }
+  };
+
+  const showOffline = () => {
+    addClass.value = 'text-white bg-red';
     addLabel.value = 'Retry';
-    addMessage.value = 'Trying to reconnect...';
+    addShowButton.value = true;
+    addMessage.value = 'You have lost connection to the internet. This app is offline.';
+  }
+
+  const showOnline = () => {
+    addClass.value = 'text-white bg-green';
+    addLabel.value = 'Retry';
+    addShowButton.value = true;
+    addMessage.value = 'You have connected to the internet. This app is online.';
   }
 
   //for grouped button

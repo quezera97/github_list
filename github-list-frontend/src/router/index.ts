@@ -7,6 +7,7 @@ import {
 } from 'vue-router';
 
 import routes from './routes';
+import { isAuthenticated } from 'src/auth';
 
 /*
  * If not building with SSR mode, you can

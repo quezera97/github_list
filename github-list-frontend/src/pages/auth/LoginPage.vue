@@ -35,10 +35,13 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import { api } from 'boot/axios';
+  import { useQuasar } from 'quasar'
 
   defineOptions({
     name: 'LoginPage'
   });
+
+  const $q = useQuasar();
 
   const email = ref<string | null>(null);
   const password = ref<string | null>(null);
@@ -50,12 +53,23 @@
         password: password.value,
       });
 
+      let key = 'authToken';
+      let value = 'this_is_auth_token';
+
+      $q.localStorage.set(key, value)
+      const localStorageValue = $q.localStorage.getItem(key);
+
+      $q.sessionStorage.set(key, value)
+      const sessionStorageValue = $q.sessionStorage.getItem(key);
+
+      console.log('Local Storage:', localStorageValue);
+      console.log('Session Storage:', sessionStorageValue);
       console.log('User logged in:', response.data);
 
       email.value = '';
       password.value = '';
     } catch (error) {
-      console.error('Error getting user:', error.message);
+      console.error('Error getting user:', error);
     }
   };
 </script>

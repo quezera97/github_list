@@ -19,8 +19,8 @@
     <q-item-section top side>
       <div class="text-grey-8 q-gutter-xs">
         <q-btn @click="deleteHandler" class="gt-xs" color="red" size="12px" flat dense round icon="delete" />
-        <!-- <q-btn class="gt-xs" color="green" size="12px" flat dense round icon="done" /> -->
         <q-btn :to="routeToEdit" size="12px" color="blue" flat dense round icon="edit" />
+        <q-btn @click="moreOptionHandler" class="gt-xs" color="green" size="12px" flat dense round icon="more_vert" />
       </div>
     </q-item-section>
 </template>
@@ -42,9 +42,13 @@
 
   defineProps<ListProps>();
 
-  const emit = defineEmits(['delete']);
+  const emit = defineEmits(['delete', 'option']);
 
   const deleteHandler = () => {
     emit('delete');
+  };
+
+  const moreOptionHandler = () => {
+    emit('option');
   };
 </script>

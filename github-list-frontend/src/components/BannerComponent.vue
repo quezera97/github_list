@@ -2,7 +2,7 @@
 <template>
   <q-banner :class="bannerClass" inline-actions>
     {{ bannerMessage }}
-    <template v-slot:action>
+    <template v-if="showButton == true" v-slot:action>
       <q-btn flat color="white" :label="buttonLabel" @click="actionHandler" />
     </template>
   </q-banner>
@@ -20,7 +20,8 @@
   interface BannerProps {
     bannerClass: string;
     bannerMessage: string;
-    buttonLabel: string;
+    showButton: boolean;
+    buttonLabel?: string;
   }
 
   defineProps<BannerProps>();
