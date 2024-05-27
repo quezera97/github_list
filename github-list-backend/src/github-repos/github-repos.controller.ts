@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Put, Param, Delete, UseGuards } from '@nestjs/common';
 import { GithubReposService } from './github-repos.service';
 import { CreateGithubRepoDto } from './dto/create-github-repo.dto';
 import { UpdateGithubRepoDto } from './dto/update-github-repo.dto';
+import { ThrottlerGuard, Throttle } from '@nestjs/throttler';
 
 @Controller('github-repos')
 export class GithubReposController {
@@ -13,6 +14,8 @@ export class GithubReposController {
   }
 
   @Get('all')
+  @UseGuards(ThrottlerGuard)
+  // @Throttle({ default: { limit: 3, ttl: 60000 } }) to override
   findAll() {
     return this.githubReposService.findAll();
   }

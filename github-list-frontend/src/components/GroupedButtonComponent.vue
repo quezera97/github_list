@@ -13,7 +13,7 @@
     />
   </q-btn-group>
   <q-btn-group v-else>
-    <q-btn class="glossy" text-color="black"color="green" label="Logout" icon="logout" @click="handleLogout"/>
+    <q-btn class="glossy" text-color="black" color="amber" label="Logout" icon="logout" @click="handleLogout"/>
   </q-btn-group>
 </template>
 
