@@ -35,6 +35,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import { api } from 'boot/axios';
+  import { useRouter } from 'vue-router';
   import { useQuasar } from 'quasar'
 
   defineOptions({
@@ -42,6 +43,7 @@
   });
 
   const $q = useQuasar();
+  const router = useRouter();
 
   const email = ref<string | null>(null);
   const password = ref<string | null>(null);
@@ -53,21 +55,35 @@
         password: password.value,
       });
 
-      let key = 'authToken';
-      let value = 'this_is_auth_token';
+      const userData = response.data.user;
 
-      $q.localStorage.set(key, value)
-      const localStorageValue = $q.localStorage.getItem(key);
+      if (userData == null) {
+        $q.notify({
+          type: 'negative',
+          message: 'Credentials do not match'
+        });
+      }
+      else if(userData.email === email.value){
+        const key = 'authToken';
+        const value = 'this_is_auth_token';
 
-      $q.sessionStorage.set(key, value)
-      const sessionStorageValue = $q.sessionStorage.getItem(key);
+        $q.localStorage.set(key, value)
+        const localStorageValue = $q.localStorage.getItem(key);
 
-      console.log('Local Storage:', localStorageValue);
-      console.log('Session Storage:', sessionStorageValue);
-      console.log('User logged in:', response.data);
+        $q.sessionStorage.set(key, value)
+        const sessionStorageValue = $q.sessionStorage.getItem(key);
 
-      email.value = '';
-      password.value = '';
+        console.log('Local Storage:', localStorageValue);
+        console.log('Session Storage:', sessionStorageValue);
+        console.log('User logged in:', response.data);
+
+        await router.push('/');
+
+        $q.notify({
+          type: 'positive',
+          message: userData.username+' successfully logged in',
+        });
+      }
     } catch (error) {
       console.error('Error getting user:', error);
     }

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { CreateUserParams, UpdateUserParams } from 'src/utils/types';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UsersService {
 
@@ -10,24 +11,30 @@ export class UsersService {
         @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
     ) { }
 
-    getUsers() {
+    async getUsers() {
         return this.userRepository.find();
     }
 
-    getUserById(id: number): Promise<UserEntity | null> {
+    async getUserById(id: number): Promise<UserEntity | null> {
         return this.userRepository.findOne({ where: { id } });
     }
 
-    createUser(userDetails: CreateUserParams) {
+    async createUser(userDetails: CreateUserParams) {
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(userDetails.password, salt);
+
+        userDetails.password = hashedPassword;
+
         const newUser = this.userRepository.create({ ...userDetails, created_at: new Date() });
+
         return this.userRepository.save(newUser);
     }
 
-    updateUser(id: number, updateUserDetails: UpdateUserParams) {
+    async updateUser(id: number, updateUserDetails: UpdateUserParams) {
         return this.userRepository.update({ id }, { ...updateUserDetails })
     }
 
-    deleteUser(id: number) {
+    async deleteUser(id: number) {
         return this.userRepository.delete(id)
     }
 }

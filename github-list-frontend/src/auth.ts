@@ -1,3 +1,6 @@
 export function isAuthenticated(): boolean {
-  return !!localStorage.getItem('authToken');
+  const localStorageToken = localStorage.getItem('authToken');
+  const sessionStorageToken = sessionStorage.getItem('authToken');
+
+  return !!localStorageToken && !!sessionStorageToken;
 }
