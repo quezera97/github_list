@@ -9,29 +9,29 @@ export class GithubReposController {
   constructor(private readonly githubReposService: GithubReposService) {}
 
   @Post('create')
-  create(@Body() createGithubRepoDto: CreateGithubRepoDto) {
-    return this.githubReposService.create(createGithubRepoDto);
+  async create(@Body() createGithubRepoDto: CreateGithubRepoDto) {
+    return await this.githubReposService.create(createGithubRepoDto);
   }
 
   @Get('all')
   @UseGuards(ThrottlerGuard)
   // @Throttle({ default: { limit: 3, ttl: 60000 } }) to override
-  findAll() {
-    return this.githubReposService.findAll();
+  async findAll() {
+    return await this.githubReposService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.githubReposService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.githubReposService.findOne(+id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateGithubRepoDto: UpdateGithubRepoDto) {
-    return this.githubReposService.update(+id, updateGithubRepoDto);
+  async update(@Param('id') id: string, @Body() updateGithubRepoDto: UpdateGithubRepoDto) {
+    return await this.githubReposService.update(+id, updateGithubRepoDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.githubReposService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.githubReposService.remove(+id);
   }
 }

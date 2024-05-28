@@ -12,17 +12,21 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<UserEntity | null> {
 
-    const user = await this.usersRepository.findOne({ where: { email } });
-    
-    const hashedPassword = user.password;
-    
-    const isMatch = await bcrypt.compare(password, hashedPassword);
-
-    if(!isMatch){
+    try {
+      const user = await this.usersRepository.findOne({ where: { email } });
+      
+      const hashedPassword = user.password;
+      
+      const isMatch = await bcrypt.compare(password, hashedPassword);
+  
+      if(!isMatch){
+        return null;
+      }
+      
+      return user || null;
+    } catch (error) {
       return null;
     }
-    
-    return user || null;
 
   }
 }

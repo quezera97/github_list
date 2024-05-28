@@ -2,16 +2,28 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as csurf from 'csurf';
 import helmet from 'helmet';
+import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule);
 
-  const middlewareFunctions = [
-    csurf(),
-    helmet(),
-  ];
+  // const middlewareFunctions = [
+  //   csurf(),
+  //   helmet(),
+  // ];
 
-  app.use(...middlewareFunctions);
+  // app.use(...middlewareFunctions);
+
+  app.enableCors();
+  
+  const logger = new Logger('Bootstrap');
+  app.useLogger(logger);
+  
+  // app.enableCors({
+  //   origin: 'http://localhost:3000',
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  //   allowedHeaders: 'Content-Type, Accept',
+  // });
   
   await app.listen(3000);
 }

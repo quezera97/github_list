@@ -73,10 +73,6 @@
         $q.sessionStorage.set(key, value)
         const sessionStorageValue = $q.sessionStorage.getItem(key);
 
-        console.log('Local Storage:', localStorageValue);
-        console.log('Session Storage:', sessionStorageValue);
-        console.log('User logged in:', response.data);
-
         await router.push('/');
 
         $q.notify({
@@ -85,7 +81,10 @@
         });
       }
     } catch (error) {
-      console.error('Error getting user:', error);
+      $q.notify({
+          type: 'negative',
+          message: 'Error geting user information'
+        });
     }
   };
 </script>

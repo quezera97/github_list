@@ -52,10 +52,13 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import { api } from 'boot/axios';
+  import { useQuasar } from 'quasar'
 
   defineOptions({
     name: 'RegisterPage'
   });
+
+  const $q = useQuasar();
 
   const username = ref<string | null>(null);
   const email = ref<string | null>(null);
@@ -70,15 +73,22 @@
         password: password.value,
       });
 
-      console.log('User created:', response.data);
+      $q.notify({
+        type: 'positive',
+        message: response.data.message
+      });
 
-      // Clear the input fields
-      username.value = '';
-      email.value = '';
-      password.value = '';
-      confirmPassword.value = '';
+      await api.post('/mails/send', {
+        receiver: email.value ?? 'test@test.com',
+        subject: 'test_subject',
+        message: 'test_message'
+      });
+
     } catch (error) {
-      console.error('Error creating user:', error);
+      $q.notify({
+        type: 'negative',
+        message: 'Error creating user'
+      });
     }
   };
 </script>

@@ -19,15 +19,26 @@ export class UsersService {
         return this.userRepository.findOne({ where: { id } });
     }
 
-    async createUser(userDetails: CreateUserParams) {
+    async createUser(userDetails: CreateUserParams): Promise<object> {
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(userDetails.password, salt);
 
         userDetails.password = hashedPassword;
 
-        const newUser = this.userRepository.create({ ...userDetails, created_at: new Date() });
+        try {
+            const newUser = this.userRepository.create({ ...userDetails, created_at: new Date() });
+    
+            await this.userRepository.save(newUser);
 
-        return this.userRepository.save(newUser);
+            return {
+                status: 'success',
+            }
+            
+        } catch (error) {
+            return {
+                status: 'error',
+            }
+        }
     }
 
     async updateUser(id: number, updateUserDetails: UpdateUserParams) {

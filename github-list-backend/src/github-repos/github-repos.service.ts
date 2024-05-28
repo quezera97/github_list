@@ -14,15 +14,15 @@ export class GithubReposService {
 
   async create(createGithubRepoDto: CreateGithubRepoDto): Promise<GithubRepoEntity> {
     const newRepo = this.githubRepository.create({ ...createGithubRepoDto, created_at: new Date() });
-    return this.githubRepository.save(newRepo);
+    return await this.githubRepository.save(newRepo);
   }
 
   async findAll(): Promise<GithubRepoEntity[]> {
-    return this.githubRepository.find();
+    return await this.githubRepository.find();
   }
 
   async findOne(id: number): Promise<GithubRepoEntity | null> {
-    return this.githubRepository.findOne({ where: { id } });
+    return await this.githubRepository.findOne({ where: { id } });
   }
 
   async update(id: number, updateGithubRepoDto: UpdateGithubRepoDto): Promise<GithubRepoEntity> {
@@ -31,6 +31,6 @@ export class GithubReposService {
   }
 
   async remove(id: number): Promise<void> {
-    await this.githubRepository.delete(id);
+    await await this.githubRepository.delete(id);
   }
 }

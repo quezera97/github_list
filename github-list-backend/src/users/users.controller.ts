@@ -19,8 +19,21 @@ export class UsersController {
     }
 
     @Post()
-    async createUser(@Body() createUserDto: CreateUserDto): Promise<UserEntity | null> {
-        return this.userService.createUser(createUserDto);
+    async createUser(@Body() createUserDto: CreateUserDto): Promise<object> {
+
+        try {
+            await this.userService.createUser(createUserDto);
+            
+            return {
+                status: 'success',
+                message: 'User successfully created',
+            }
+        } catch (error) {
+            return {
+                status: 'error',
+                message: error.message || 'Error in creating user',
+            }
+        }
     }
 
     @Put(':id')
