@@ -55,7 +55,7 @@
         password: password.value,
       });
 
-      const userData = response.data.user;
+      const userData = response.data;
 
       if (userData == null) {
         $q.notify({
@@ -68,10 +68,7 @@
         const value = 'this_is_auth_token';
 
         $q.localStorage.set(key, value)
-        const localStorageValue = $q.localStorage.getItem(key);
-
         $q.sessionStorage.set(key, value)
-        const sessionStorageValue = $q.sessionStorage.getItem(key);
 
         await router.push('/');
 

@@ -16,6 +16,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { BullModule } from '@nestjs/bull';
 import { TaskService } from './task/task.service';
 import { CacheModule } from '@nestjs/cache-manager';
+import { LoggingInterceptor } from './interceptors/logging.interceptor';
 
 
 const appEntities = [
@@ -31,6 +32,7 @@ const appModules = [
 
 const appServices = [
   AppService,
+  LoggingInterceptor,
   TaskService,
 ]
 

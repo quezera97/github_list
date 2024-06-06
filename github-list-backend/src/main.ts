@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import * as csurf from 'csurf';
 import helmet from 'helmet';
 import { Logger } from '@nestjs/common';
+import * as compression from 'compression';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,16 +16,19 @@ async function bootstrap() {
   // app.use(...middlewareFunctions);
 
   app.enableCors();
-  
-  const logger = new Logger('Bootstrap');
-  app.useLogger(logger);
-  
   // app.enableCors({
   //   origin: 'http://localhost:3000',
   //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   //   allowedHeaders: 'Content-Type, Accept',
   // });
   
+  const logger = new Logger('Bootstrap');
+  app.useLogger(logger);
+
+  // For high-traffic websites in production, it is strongly recommended to offload compression from the application server;
+  // typically in a reverse proxy (e.g., Nginx). In that case, you should not use compression middleware.
+  app.use(compression());
+
   await app.listen(3000);
 }
 
